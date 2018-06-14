@@ -3,7 +3,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-var HtmlMinifierPlugin = require('html-minifier-webpack-plugin');
 const devMode = process.env.NODE_ENV !== 'production'; // eslint-disable-line
 
 module.exports = {
@@ -107,6 +106,5 @@ module.exports = {
             filename: devMode ? '[name].css' : '../css/[name].min.css',
             chunkFilename: '[id].css'
         }),
-        new HtmlMinifierPlugin({})
     ]
 };
