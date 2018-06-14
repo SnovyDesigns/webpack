@@ -93,10 +93,10 @@ module.exports = {
         }
     },
     plugins: [
-        new HtmlWebpackPlugin({
-            template: './src/index.html',
-            filename: devMode ? 'index.html' : '../index.html'
-        }),
+        // new HtmlWebpackPlugin({
+        //     template: './src/index.html',
+        //     filename: devMode ? 'index.html' : '../index.html'
+        // }),
         new MiniCssExtractPlugin({
             filename: devMode ? '[name].css' : '../css/[name].min.css',
             chunkFilename: '[id].css'
