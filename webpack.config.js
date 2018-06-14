@@ -3,13 +3,14 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+var HtmlMinifierPlugin = require('html-minifier-webpack-plugin');
 const devMode = process.env.NODE_ENV !== 'production'; // eslint-disable-line
 
 module.exports = {
-    entry: path.resolve(__dirname, 'src') + '/app.js', // eslint-disable-line
+    entry: path.resolve(__dirname, 'src') + '/app/index.js', // eslint-disable-line
     output: {
-        path: path.resolve(__dirname, 'build'), // eslint-disable-line
-        filename: 'app.bundled.js'
+        path: path.resolve(__dirname, 'build/js'), // eslint-disable-line
+        filename: 'index.bundled.js'
     },
     mode: process.env.NODE_ENV, // eslint-disable-line
     optimization: {
@@ -36,10 +37,15 @@ module.exports = {
             {
                 test: /\.s?[ac]ss$/,
                 use: [
-                    devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
-                    'css-loader',
-                    'postcss-loader',
-                    'sass-loader',
+                    {loader: devMode ? 'style-loader' : MiniCssExtractPlugin.loader},
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            modules: true
+                        }
+                    },
+                    {loader: 'postcss-loader'},
+                    {loader: 'sass-loader'}
                 ],
             },
             {
@@ -100,6 +106,7 @@ module.exports = {
         new MiniCssExtractPlugin({
             filename: devMode ? '[name].css' : '../css/[name].min.css',
             chunkFilename: '[id].css'
-        })
+        }),
+        new HtmlMinifierPlugin({})
     ]
 };
