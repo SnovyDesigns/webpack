@@ -3,7 +3,28 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const devMode = process.env.NODE_ENV !== 'production'; // eslint-disable-line
+const OptimizeJsPlugin = require('optimize-js-plugin');
+const devMode = process.env.NODE_ENV === 'development'; // eslint-disable-line
+const prodMode = process.env.NODE_ENV === 'production'; // eslint-disable-line
+
+const plugins = [
+    new HtmlWebpackPlugin({
+        template: './src/index.html',
+        filename: devMode ? 'index.html' : '../index.html'
+    }),
+    new MiniCssExtractPlugin({
+        filename: devMode ? '[name].css' : '../css/[name].min.css',
+        chunkFilename: '[id].css'
+    })
+];
+
+if (prodMode) {
+    plugins.push(
+        new OptimizeJsPlugin({
+            sourceMap: false
+        })
+    );
+}
 
 module.exports = {
     entry: path.resolve(__dirname, 'src') + '/app/index.js', // eslint-disable-line
@@ -19,7 +40,7 @@ module.exports = {
                 parallel: true,
                 sourceMap: false
             }),
-            new OptimizeCSSAssetsPlugin({})
+            new OptimizeCSSAssetsPlugin({}),
         ]
     },
     devtool: devMode ? 'cheap-module-eval-source-map' : '',
@@ -35,17 +56,23 @@ module.exports = {
             },
             {
                 test: /\.s?[ac]ss$/,
-                use: [
-                    {loader: devMode ? 'style-loader' : MiniCssExtractPlugin.loader},
+                loaders: [
+                    {
+                        loader: devMode ? 'style-loader' : MiniCssExtractPlugin.loader
+                    },
                     {
                         loader: 'css-loader',
                         options: {
-                            modules: true
+                            modules: true,
                         }
                     },
-                    {loader: 'postcss-loader'},
-                    {loader: 'sass-loader'}
-                ],
+                    {
+                        loader: 'postcss-loader'
+                    },
+                    {
+                        loader: 'sass-loader'
+                    },
+                ]
             },
             {
                 test: /\.(svg|eot|ttf|woff|woff2)$/,
@@ -67,7 +94,7 @@ module.exports = {
                     {
                         loader: 'img-loader',
                         options: {
-                            plugins: process.env.NODE_ENV === 'production' && [ // eslint-disable-line
+                            plugins: prodMode && [ // eslint-disable-line
                                 require('imagemin-gifsicle')({
                                     interlaced: false
                                 }),
@@ -92,19 +119,5 @@ module.exports = {
             }
         ]
     },
-    resolve: {
-        alias: {
-            'images': path.resolve(__dirname, 'src/images') // eslint-disable-line
-        }
-    },
-    plugins: [
-        new HtmlWebpackPlugin({
-            template: './src/index.html',
-            filename: devMode ? 'index.html' : '../index.html'
-        }),
-        new MiniCssExtractPlugin({
-            filename: devMode ? '[name].css' : '../css/[name].min.css',
-            chunkFilename: '[id].css'
-        }),
-    ]
+    plugins: plugins
 };

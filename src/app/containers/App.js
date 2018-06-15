@@ -3,13 +3,23 @@ import style from '../../sass/App.scss';
 import React from 'react';
 import uuid from 'uuid';
 import Title from '../components/Title';
+import TodoList from '../components/TodoList';
 
 export default class App extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            data: []
+            data: [{
+                id: 1,
+                text: 'clean room'
+            }, {
+                id: 2,
+                text: 'wash the dishes'
+            }, {
+                id: 3,
+                text: 'feed my cat'
+            }]
         };
     }
     addTodo(val) {
@@ -25,11 +35,10 @@ export default class App extends React.Component {
         this.setState({data: remainder});
     }
     render() {
-        console.log('Test');
         return (
             <div className={style.TodoApp}>
                 <Title tasksCount={this.state.data.length} />
-                Tutaj pojawią się komponenty naszej aplikacji.
+                <TodoList todos={this.state.data} removeTodo={this.removeTodo} />
             </div>
         );
     }
