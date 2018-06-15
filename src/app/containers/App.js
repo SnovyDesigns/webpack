@@ -11,15 +11,19 @@ export default class App extends React.Component {
 
         this.state = {
             data: [{
-                id: 1,
+                id: uuid.v4(),
                 text: 'clean room'
             }, {
-                id: 2,
+                id: uuid.v4(),
                 text: 'wash the dishes'
             }, {
-                id: 3,
+                id: uuid.v4(),
                 text: 'feed my cat'
-            }]
+            }, {
+                id: uuid.v4(),
+                text: 'build react app'
+            }
+            ]
         };
     }
     addTodo(val) {
@@ -43,3 +47,4 @@ export default class App extends React.Component {
         );
     }
 }
+

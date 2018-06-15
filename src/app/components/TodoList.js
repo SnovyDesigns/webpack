@@ -2,10 +2,10 @@ import React from 'react';
 import style from '../../sass/TodoList.scss';
 
 const TodoList = props => {
-    let {todos, removeTodo} = props || {};
-    todos = todos.map((item, index) => {
+    let {todos} = props || {};
+    todos = todos.map((item) => {
         return (
-            <li key={item.id}>{item.text} <span>x</span></li>
+            <li key={item.id}>{item.text}</li>
         );
     });
     return (

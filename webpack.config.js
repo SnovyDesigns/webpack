@@ -50,9 +50,7 @@ module.exports = {
                 test: /\.jsx?$/,
                 include: path.resolve(__dirname, 'src'), // eslint-disable-line
                 exclude: /node_modules/,
-                use: {
-                    loader: 'babel-loader',
-                }
+                loader: 'babel-loader',
             },
             {
                 test: /\.s?[ac]ss$/,
